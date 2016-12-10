@@ -82,20 +82,40 @@ The motivation for the project is to prove that a substantial amount of the sema
 The statistical learning formulation of the problem statement in this study, can be broken down into two distinct segments, namely:
 \begin{itemize}
 	\item Learning a projection of the document into vector space. This projection will act as a mathematical proxy for the sentiment that the document is trying to convey. This segment is completely unsupervised, and does not require any tuning or pre-processing to compute.
-    \item Learning a relation between the aforementioned projection of each labeled document, and the associated score or label.
+  \item Learning a relation between the aforementioned projection of each labeled document, and the associated score or label. This segment of the learning pipeline is supervised relies on previously scored or rated documents.
 \end{itemize}
 
 \subsection{Continuous function learning}
+Assume that a given output variable \textit{y} depends on a variable \textit{x} such that
+\begin{equation}
+\displaystyle f(x) = \beta x + c + \epsilon
+\end{equation}
+\begin{equation}
+\displaystyle y = f(x)
+\end{equation}
+where x represents a vector of independent variables, y represents the dependant or response variable, $\beta$ and c are model vector space functions that are applied to x to map it to y, and $\epsilon$ is the error term.
 
+Now, assume that the variable \textit{x} increases by a small amount $\Delta x$, and that $x_0$ was the initial value, such that the value of \textit{x} is updated to
+\begin{equation}
+\displaystyle \Delta x = x - x_0
+\end{equation}
+
+A continuous function is defined as one in which an infinitely small change for the input variable x results in a corresponding infinitely small change in the response variable y \cite{continuous_function}, which can be expressed as
+\begin{equation}
+\displaystyle \Delta y = f(x) - f(x_0)
+\end{equation}
+
+Continuous functions are typically needed when the response variable calculated is a measurable quantity, rather than a class label. Since sentiment as fine-grained values offer more depth in terms of sentiment insight \cite{drake2008sentiment}, the study in this paper is formulated as a regression problem.
 
 \section{Challenges}
+
+\subsection{}
 
 
 \section{Background}
 
 \subsection{Word2Vec} \label{Word2Vec}
-The Word2Vec model\cite{mikolov2013efficient} can take into consideration both preceding and succeeding words, to compute the probabililty of occurrence of the current word, as part of the Continuous Bag-of-words (CBOW) model. Alternatively, Word2Vec also provides a skip-gram model, which conversely, used the context of a word i.e. the words preceding and following, it, to predict the most statistically probably current word. These word embeddings can be used to derive both syntactic as well as symantic relations in the vector space of the language model. A representation of this is given in the figure \ref{word2vec-vectorspace-intuition}.
-
+The Word2Vec model\cite{mikolov2013efficient} can take into consideration both preceding and succeeding words, to compute the probabililty of occurrence of the current word, as part of the Continuous Bag-of-words (CBOW) model. Alternatively, Word2Vec also provides a skip-gram model, which conversely, used the context of a word i.e. the words preceding and following, it, to predict the most statistically probably current word. These word embeddings can be used to derive both syntactic as well as symantic relations in the vector space of the language model. A representation of this is given in Figure \ref{fig:word2vec-vectorspace-intuition}.
 
 \subsection{Doc2Vec}
 
