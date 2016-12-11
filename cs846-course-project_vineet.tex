@@ -115,11 +115,24 @@ Continuous functions are typically needed when the response variable calculated 
 \section{Background}
 
 \subsection{Word2Vec} \label{Word2Vec}
-The Word2Vec model\cite{mikolov2013efficient} can take into consideration both preceding and succeeding words, to compute the probabililty of occurrence of the current word, as part of the Continuous Bag-of-words (CBOW) model. Alternatively, Word2Vec also provides a skip-gram model, which conversely, used the context of a word i.e. the words preceding and following, it, to predict the most statistically probably current word. These word embeddings can be used to derive both syntactic as well as symantic relations in the vector space of the language model. A representation of this is given in Figure \ref{fig:word2vec-vectorspace-intuition}.
+Word vectors are a step-away from the traditional bag-of-words + n-gram model. The latter ends up losing
 
-\subsection{Doc2Vec}
+The Word2Vec model\cite{mikolov2013efficient} can take into consideration both preceding and succeeding words, to compute the probabililty of occurrence of the current word, as part of the Continuous Bag-of-words (CBOW) model. Alternatively, Word2Vec also provides a skip-gram model\cite{mikolov2013distributed}, which conversely, used the context of a word i.e. the words preceding and following it, to predict the most statistically probably current word. These word embeddings can be used to derive both syntactic as well as symantic relations in the vector space of the language model. A representation of this is given in Figure \ref{fig:word2vec-vectorspace-intuition}.
+
+\subsection{Paragraph Vectors}
+Paragraph vectors are a similar concept to Word2Vec, but rely on computing a fixed-length vector representation of a variable length group of words, which could be a sentence, a paragraph, or even an entire document.
+
+Since vectors representations of documents seem to outperform bag-of-words models for the purposes of semantic summarization and document classification tasks\cite{le2014distributed}, it follows that a vector representation based approach should be used to evaluate performance on a regression task as well.
+
+The implementation of paragraph vectors used for the purpose of implementing the system architecture in this study is Doc2Vec, from the Gensim library\cite{doc2vec_api}.
 
 \subsection{Statistical Learning Models}
+Once the entities about which we wish to learn a representation are projected into vector space, there are an abundance of statistical learning methods that can be used to learn a continuous function including linear regression, 
+
+\subsubsection{Linear Regression}
+
+\subsubsection{Support Vector Machines}
+
 
 \subsection{Scaling with Spark}
 
