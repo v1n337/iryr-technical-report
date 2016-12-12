@@ -8,7 +8,7 @@
 \usepackage{listings}
 
 \begin{document}
-\title{Semi-supervised Continuous Function Learning\\ for Sentiment Trend Detection in Big Data}
+\title{Rapid-Rate: A Framework for Semi-supervised \\Real-time Sentiment Trend Detection\\ in Unstructured Big Data}
 
 
 \author{
@@ -152,12 +152,27 @@ The problem of regression in mathematical statistics is characterized by the fac
 In the case for this study, once the Doc2Vec implementation generates the vector space representation of each of the documents, each of the learned dimensions reprsent a different input variable for the regression problem. In reality, each of these dimensions represent a weighted probabilty score generate by the hidden layer of neurons in the paragraph vector model.
 
 \subsubsection{Support Vector Regression}
+Support Vector Regression (SVR) attempts to minimize the generalization error bound so as to achieve generalized performance. The idea of SVR is based on the computation of a linear regression function in a high dimensional feature space where the input data are mapped via a nonlinear function. SVR has been applied in various fields – time series and financial (noisy and risky) prediction, approximation of complex engineering analyses, convex quadratic programming and choices of loss functions\cite{basak2007support}.
+
+The input parameters to the support vector regressor remain the same as those described above for the linear regressor.
 
 
-\subsection{Scaling with Spark}
+\subsection{Distributed Messaging with Kafka}
 
+
+\subsection{Horizontal Scaling with Spark Streaming}
+This study used Apache Spark Streaming for the real-time processing of the unlabeled document data. Discretized streams (D-Streams), a stream programming model for large clusters that provides consistency, efficient fault recovery, and powerful integration with batch systems is the core offering of Spark Streaming. The key idea is to treat streaming as a series of short batch jobs, and bring down the latency of these jobs as much as possible. This brings many of the benefits of batch processing models to stream processing, including clear consistency semantics and a new parallel recovery technique that is a truly cost-efficient recovery technique for stream processing in large clusters\cite{zaharia2012discretized}.
 
 \section{System Architecture}
+The system architecture is depicted in Fig. \ref{fig:system-architecture}
+
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=\textwidth]{images/rapid_rate_system_arch_1.png}
+\caption{Rapid-Rate System Architecture}
+\label{fig:system-architecture}
+\end{figure*}
 
 
 \section{Implementation}
