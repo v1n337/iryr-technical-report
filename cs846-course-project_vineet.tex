@@ -46,6 +46,7 @@ However, models like these are difficult to train for the following reasons:
 
 All of the processes described above are time-consuming and tedious. The objective of this work is to implement and evaluate a strategy to effectively eliminate the above steps from the process of training a language model. The proposition is to rely on unsupervised strategies like continuous bag-of-words and the skip-gram model to learn word embeddings, that will serve as a syntactic and semantic proxy for the text being processed. The features thus learnt, can then be used to train regression models to predict text scores.
 
+
 \begin{figure*}[ht]
 \centering
 \includegraphics[width=\textwidth]{images/word2vec_1.png}
@@ -85,6 +86,15 @@ The statistical learning formulation of the problem statement in this study, can
   \item Learning a relation between the aforementioned projection of each labeled document, and the associated score or label. This segment of the learning pipeline is supervised relies on previously scored or rated documents.
 \end{itemize}
 
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=400pt]{images/docvec_1.png}
+\caption{Paragraph Vector Learning Framework\cite{mikolov2013distributed}}
+\label{fig:paragraph-vector-framework}
+\end{figure*}
+
+
 \subsection{Continuous function learning}
 Assume that a given output variable \textit{y} depends on a variable \textit{x} such that
 \begin{equation}
@@ -109,7 +119,11 @@ Continuous functions are typically needed when the response variable calculated 
 
 \section{Challenges}
 
-\subsection{}
+\subsection{Language Model Learning}
+
+\subsection{Unstructured Big Data}
+
+\subsection{Deep Learning}
 
 
 \section{Background}
@@ -122,16 +136,22 @@ The Word2Vec model\cite{mikolov2013efficient} can take into consideration both p
 \subsection{Paragraph Vectors}
 Paragraph vectors are a similar concept to Word2Vec, but rely on computing a fixed-length vector representation of a variable length group of words, which could be a sentence, a paragraph, or even an entire document.
 
-Since vectors representations of documents seem to outperform bag-of-words models for the purposes of semantic summarization and document classification tasks\cite{le2014distributed}, it follows that a vector representation based approach should be used to evaluate performance on a regression task as well.
+Since vectors representations of documents seem to outperform bag-of-words models for the purposes of semantic summarization and document classification tasks, it follows that a vector representation based approach should be used to evaluate performance on a regression task as well. Paragraph vectors also address some of the keyweaknesses of bag-of-words models. First, they inherit an important property of theword vectors: the semantics of the words. The second advantage of the paragraph vectors is that they take into consideration the word order, at least in a small context, in the same way that an n-grammodelwith a large n would do. This is important, because the n-gram model preserves a lot of information of the paragraph, including the word order\cite{le2014distributed}. The paragraph representation framework is depicted in Fig. \ref{fig:paragraph-vector-framework}.
 
 The implementation of paragraph vectors used for the purpose of implementing the system architecture in this study is Doc2Vec, from the Gensim library\cite{doc2vec_api}.
 
+
 \subsection{Statistical Learning Models}
-Once the entities about which we wish to learn a representation are projected into vector space, there are an abundance of statistical learning methods that can be used to learn a continuous function including linear regression, 
+Once the entities about which we wish to learn a representation are projected into vector space, there are an abundance of statistical learning methods that can be used to learn a continuous function including linear regression, polynomial regression, ridge regression, stepwise regression, lasso regression et. al.
+
+This study utilizes linear regression and support vector regression to test the veracity of the model predictions. Both these methods are described in the below subsections.
 
 \subsubsection{Linear Regression}
+The problem of regression in mathematical statistics is characterized by the fact that there is insufficient information about the distributions of the variables under consideration\cite{regression_analysis}.
 
-\subsubsection{Support Vector Machines}
+In the case for this study, once the Doc2Vec implementation generates the vector space representation of each of the documents, each of the learned dimensions reprsent a different input variable for the regression problem. In reality, each of these dimensions represent a weighted probabilty score generate by the hidden layer of neurons in the paragraph vector model.
+
+\subsubsection{Support Vector Regression}
 
 
 \subsection{Scaling with Spark}
