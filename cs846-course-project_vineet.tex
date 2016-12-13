@@ -26,7 +26,12 @@
 \maketitle
 
 \begin{abstract}
-Commercial establishments (like restaurants, service centers) have several sources of feedback, most of which need not be as structured as feedback provided by services like Yelp, or Amazon. Services like these provide a fine-grained score for product and service ratings. Some sources, however, like social media (Twitter, Facebook), mailing lists (Google Groups), forums (Quora) et al. are sources for much more volumnious, but unstructured and unlabeled data. This text could be pipelined into a system with a built-in prediction model, with the objective of generating real-time graphs on opinion and sentiment trends. Although such tasks like the one described about have been explored with respect to document classification problems in the past, the implementation described in this paper, by virtue of learning a continuous function rather than a discrete one, offers a lot more depth of insight as compared to document classification approaches. This study aims to explore the validity of such a continuous function predicting model to quantify sentiment about an entity, without the additional overhead of labeling, pre-processing, and feature extraction.
+Commercial establishments (like restaurants, service centers) have several sources of feedback, most of which need not be as structured as feedback provided by services like Yelp, or Amazon.
+Services like these provide a fine-grained score for product and service ratings.
+Some sources, however, like social media (Twitter, Facebook), mailing lists (Google Groups), forums (Quora) et al. are sources for much more volumnious, but unstructured and unlabeled data. 
+This text could be pipelined into a system with a built-in prediction model, with the objective of generating real-time graphs on opinion and sentiment trends. 
+Although such tasks like the one described about have been explored with respect to document classification problems in the past, the implementation described in this paper, by virtue of learning a continuous function rather than a discrete one, offers a lot more depth of insight as compared to document classification approaches. 
+This study aims to explore the validity of such a continuous function predicting model to quantify sentiment about an entity, without the additional overhead of labeling, pre-processing, and feature extraction.
 \end{abstract}
 
 
@@ -39,7 +44,12 @@ Commercial establishments (like restaurants, service centers) have several sourc
 \vspace{5mm}
 
 \section{Introduction}
-Document labeling and attribute discovery is already a widely researched area in the domain of natural language processing. The most common use-cases of document classification are product \& service review rating predictions, automatic grading of essays, spam detection, plagiarism detection et al. However, most of the current approaches used for these tasks rely on lexicon based methods with a centralized source indicating the weights of a word towards a set of emotion or sentiment. Some other approaches use N-gram count vectorization approaches and document level similarity scores like TF-IDF. However, N-gram approaches only partially model the language context probabilities i.e. the probably of a word occurring next in the corpus depends only on the n-1 words that precede it. Word2Vec's model take additional word contexts into account, as described in section \ref{Word2Vec}.
+Document labeling and attribute discovery is already a widely researched area in the domain of natural language processing.
+The most common use-cases of document classification are product \& service review rating predictions, automatic grading of essays, spam detection, plagiarism detection et al.
+However, most of the current approaches used for these tasks rely on lexicon based methods with a centralized source indicating the weights of a word towards a set of emotion or sentiment.
+Some other approaches use N-gram count vectorization approaches and document level similarity scores like TF-IDF.
+However, N-gram approaches only partially model the language context probabilities i.e. the probably of a word occurring next in the corpus depends only on the n-1 words that precede it.
+Word2Vec's model take additional word contexts into account, a feature which will be elaborated upon later in this paper Section \ref{Word2Vec}.
 
 However, models like these are difficult to train for the following reasons:
 \begin{itemize}
@@ -48,7 +58,10 @@ However, models like these are difficult to train for the following reasons:
   \item Having to use stepwise regression to eliminate non-relevant features
 \end{itemize}
 
-All of the processes described above are time-consuming and tedious. The objective of this work is to implement and evaluate a strategy to effectively eliminate the above steps from the process of training a language model. The proposition is to rely on unsupervised strategies like continuous bag-of-words and the skip-gram model to learn word embeddings, that will serve as a syntactic and semantic proxy for the text being processed. The features thus learnt, can then be used to train regression models to predict text scores.
+All of the processes described above are time-consuming and tedious. 
+The objective of this work is to implement and evaluate a strategy to effectively eliminate the above steps from the process of training a language model. 
+The proposition is to rely on unsupervised strategies like continuous bag-of-words and the skip-gram model to learn word embeddings, that will serve as a syntactic and semantic proxy for the text being processed. 
+The features thus learnt, can then be used to train regression models to predict text scores.
 
 
 \begin{figure*}[ht]
@@ -63,7 +76,8 @@ All of the processes described above are time-consuming and tedious. The objecti
 \section{Similar Work}
 This section discusses the previous work done on mining and analytics pertaining to text data.
 
-Most of the similar work in the area of learning word-embeddings is related to classifying documents into a given set of labels or topics. The purpose of this study is to extend the usage of the document vector representation to demonstrating its usage when the response variable (the output of a learning task) a continuous function (document-scoring) rather than discrete values (document classification). This work can be viewed as a generalization of the previous approaches, because this study aims to predict fine-grained document scores, rather than coarse document classifications.
+Most of the similar work in the area of learning word-embeddings is related to classifying documents into a given set of labels or topics. 
+The purpose of this study is to extend the usage of the document vector representation to demonstrating its usage when the response variable (the output of a learning task) a continuous function (document-scoring) rather than discrete values (document classification). This work can be viewed as a generalization of the previous approaches, because this study aims to predict fine-grained document scores, rather than coarse document classifications.
 
 Most of the current work in usage of regression techniques on text content are related to metadata or features extraction \cite{su2015genetic} \cite{weissman2016natural}. Similarly there have been several studies to identify document tags using classification techniques\cite{bespalov2011sentiment}\cite{pang2002thumbs}. However, there is a relative absence of studies to evaluate the accuracy of regression models that try to predict a document score using a continuous-function model.
 
@@ -100,10 +114,10 @@ The statistical learning formulation of the problem statement in this study, can
 \subsection{Continuous function learning}
 Assume that a given output variable \textit{y} depends on a variable \textit{x} such that
 \begin{equation}
-\displaystyle f(x) = \beta x + c + \epsilon
+    \displaystyle f(x) = \beta x + c + \epsilon
 \end{equation}
 \begin{equation}
-\displaystyle y = f(x)
+    \displaystyle y = f(x)
 \end{equation}
 where x represents a vector of independent variables, y represents the dependant or response variable, $\beta$ and c are model vector space functions that are applied to x to map it to y, and $\epsilon$ is the error term.
 
@@ -124,6 +138,7 @@ Continuous functions are typically needed when the response variable calculated 
 \section{Challenges}
 
 \subsection{Language Model Learning}
+Language understanding is still not yet a completely solved problem in computer science, primarily because of the variety
 
 \subsection{Unstructured Big Data}
 
@@ -146,6 +161,12 @@ Since vectors representations of documents seem to outperform bag-of-words model
 
 The implementation of paragraph vectors used for the purpose of implementing the system architecture in this study is Doc2Vec, from the Gensim library\cite{doc2vec_api}.
 
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=\textwidth]{images/rapid_rate_system_arch_1.png}
+\caption{Rapid-Rate System Architecture}
+\label{fig:system-architecture}
+\end{figure*}
 
 \subsection{Statistical Learning Models}
 Once the entities about which we wish to learn a representation are projected into vector space, there are an abundance of statistical learning methods that can be used to learn a continuous function including linear regression, polynomial regression, ridge regression, stepwise regression, lasso regression et. al.
@@ -215,13 +236,6 @@ These scores are posted in real-time to a time-series database, which in turn, a
 The analytical dashboard provides a line graph of the sentiment trend over time, and can also provided for additional features such as Bollinger Band plotting, and threshold-breach based alerts.
 
 
-\begin{figure*}[ht]
-\centering
-\includegraphics[width=\textwidth]{images/rapid_rate_system_arch_1.png}
-\caption{Rapid-Rate System Architecture}
-\label{fig:system-architecture}
-\end{figure*}
-
 \vspace{5mm}
 
 \section{Implementation}
@@ -232,7 +246,24 @@ The analytical dashboard provides a line graph of the sentiment trend over time,
 \subsection{Online real-time prediction engine}
 
 \subsection{Tech stack}
-The tech stack used for the implementation of the framework is comprised of the following components:
+The tech stack used for the implementation of the framework is comprised of:
+
+\subsubsection{Python}
+Processing code, pipelining, real-time prediction code.
+\subsubsection{Gensim}
+Python library. The Doc2Vec class in Gensim is used to learn the document representations.
+\subsubsection{Scikit-Learn}
+Python libary. The linear regression and support vector regression is done using this library.
+\subsubsection{Apache Kafka}
+Distributed messaging queue. This is used to receive new unlabeled documents, and is also a potential sink for dumping the results of the result ratings of unlabeled documents.
+\subsubsection{Apache Spark Streaming}
+The real-time prediction component written in Python runs on Spark Streaming.
+\subsubsection{OpenTSDB}
+Time series database. This database houses each individually predicted document rating and their corresponding time-stamps.
+\subsubsection{Bosun}
+Bosun comprises of 2 things - a graphical interface with which to perform easy temporal scans, and a configurable alerting system based on the rules on the incoming values.
+
+The chosen tech-stack is state-of-the-art for framework design and development, with a strong developer community and guaranteed long-term support for each, making the framework future-proof for the forseeable timeline.
 
 \vspace{5mm}
 
@@ -241,7 +272,7 @@ The tech stack used for the implementation of the framework is comprised of the 
 \subsection{Testbed}
 The testbed is integrated into the actual framework, and the processors for model training.
 The tests were carried out on an Amazon document corpus of 600,000 unique product reviews.
-The complete dataset of Amazon reviews is openly accessible.
+The complete dataset of Amazon reviews is openly accessible\cite{amazon_datasets}.
 
 \subsection{Metrics}
 The experimental results are being evaluated for goodness of model fit using the co-efficient of determination metric \cite{jaeger1990statistics}.
@@ -282,6 +313,17 @@ The accuracy schores of the experimental results are presented in Table \ref{res
     }
 \end{table}
 
+The positive scores of both the experiment analyses indicate that the model does capture a good amount of the sentiment in each of the labeled documents, and ensures a reasonable amount of accuracy for the prediction of the real-time unlabeled documents.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{images/code_profiling.png}
+\caption{Code Profiling Statistics}
+\label{fig:code-profiling}
+\end{figure}
+
+Also, from the code profiling information presenting in Figure \ref{fig:code-profiling}, it is evident that the unsupervised learning segement of obtaining the document vectors of the labeled documents is the longest running part of the Offline learning module. In comparison, the document processing and statistical model training is negligible.
+
 \vspace{5mm}
 
 \section{Conclusions}
@@ -306,12 +348,20 @@ The author believes this framework can be used both in industrial settings as we
 
 \section{Future Work}
 With respect to the statistical models trained, the current approach supports only the simplest regression models i.e. Linear Regression and Support Vector Regression (SVR). 
-This could be expanded to offer additional training mechanisms
+This could be expanded to offer additional training mechanisms that can integrate more sophisticated regression algorithms for a higher level of accuracy.
+ 
+Additional channels could be chosen as the culminiation point of the newly rated unlabeled documents.
+For now, the data is stored in a time-series database.
+But this can easily be converted into something more generic, like publishing it to another Kafka queue.
+Mulitple consumer applications can, thus, benefit from the stream of insights published to the stream.
+
+Another potential aim for future work is to reduce the time taken for the initial document vector training of the offline model.
+As shown in the code profiling statistics present in Figure \ref{fig:code-profiling}, it is evident that a significant reduction in the cost of training the initial model could be acheived if the document vectors training time were to be reduced.
 
 \vspace{5mm}
 
 \section{Acknowledgments}
-The author would like to thank ...
+The author would like to thank Dr. Paulo Alencar, for his guidance, feedback and suggestions during the conceptualization of this research project.
 
 \vspace{5mm}
 
