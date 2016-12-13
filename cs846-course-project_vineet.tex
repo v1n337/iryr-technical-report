@@ -47,12 +47,12 @@ However, models like these are difficult to train for the following reasons:
 All of the processes described above are time-consuming and tedious. The objective of this work is to implement and evaluate a strategy to effectively eliminate the above steps from the process of training a language model. The proposition is to rely on unsupervised strategies like continuous bag-of-words and the skip-gram model to learn word embeddings, that will serve as a syntactic and semantic proxy for the text being processed. The features thus learnt, can then be used to train regression models to predict text scores.
 
 
-\begin{figure*}[ht]
-\centering
-\includegraphics[width=\textwidth]{images/word2vec_1.png}
-\caption{Word2Vec Vector Space Intuition\cite{tensorflow_word2vec}}
-\label{fig:word2vec-vectorspace-intuition}
-\end{figure*}
+% \begin{figure*}[ht]
+% \centering
+% \includegraphics[width=\textwidth]{images/word2vec_1.png}
+% \caption{Word2Vec Vector Space Intuition\cite{tensorflow_word2vec}}
+% \label{fig:word2vec-vectorspace-intuition}
+% \end{figure*}
 
 
 \section{Similar Work}
@@ -71,11 +71,6 @@ The problem statement can be formulated as an evaluation of Paragraph Vectors \c
 The prediction scores will be evaluated using the co-efficient of determination metric, also known as the R\textsuperscript{2} metric \cite{cameron1997r}. The hypothesis is to prove that the document ratings have a positive correlation with the vectorized versions of the document text content, because the semantics of positive and negative reviews are expected to be captured by the shallow neural network trained on the corpus. The expected R\textsuperscript{2} metric score being over 0, will confirm the hypothesis, and a negative value will disprove it.
 
 
-\section{Terminology}
-This section formalizes the terminology that will be used throughout the paper.
-
-The corpus of reviews on which the document vectors will be trained on will be referred to as `labeled documents'.
-
 \section{Motivation}
 The motivation for the project is to prove that a substantial amount of the semantic signal about sentiment with respect to a product or service, as extracted from a snippet or document of text, should prove to be a good indicator of the labeled document scores. If proven to be true, the objective includes building a real-time streaming framework, which can analyze unseen reviews from the previously provided exampled of unlabeled data, and be able to emit a score-prediction with minimal processing delays. This framework can be set-up on commodity hardware, and a given business can simply pipe their unlabeled reviews or articles into the system, and expect a graphical representation of the sentiment about a particular topic that is updated in real-time. The framework also allows rules to be set for alerts, so, for instance, if the approval rating of a particular business falls very low, an email alert could be triggered to the business decision makers to respond quicker to the negative sentiment, a process which would otherwise span several business days.
 
@@ -87,12 +82,12 @@ The statistical learning formulation of the problem statement in this study, can
 \end{itemize}
 
 
-\begin{figure*}[ht]
-\centering
-\includegraphics[width=400pt]{images/docvec_1.png}
-\caption{Paragraph Vector Learning Framework\cite{mikolov2013distributed}}
-\label{fig:paragraph-vector-framework}
-\end{figure*}
+% \begin{figure*}[ht]
+% \centering
+% \includegraphics[width=400pt]{images/docvec_1.png}
+% \caption{Paragraph Vector Learning Framework\cite{mikolov2013distributed}}
+% \label{fig:paragraph-vector-framework}
+% \end{figure*}
 
 
 \subsection{Continuous function learning}
@@ -166,29 +161,84 @@ This study used Apache Spark Streaming for the real-time processing of the unlab
 \section{System Architecture}
 The system architecture is depicted in Fig. \ref{fig:system-architecture}
 
+The individual components and their interactions are described in the below sub-sections \ref{Components} and \ref{Component Interactions}.
 
-\begin{figure*}[ht]
-\centering
-\includegraphics[width=\textwidth]{images/rapid_rate_system_arch_1.png}
-\caption{Rapid-Rate System Architecture}
-\label{fig:system-architecture}
-\end{figure*}
+\subsection{Components} \label{Components}
+
+\subsubsection{Document embedding tool}
+The labeled documents are the initial input parameters to the Rapid-Rate framework. These are variable length text snippets or paragraphs, each with an associated score. This tool is used to convert the document text into their corresponding vector representations.
+
+\subsubsection{ML Modeling tool}
+This is a library used by the framework to infer a model from the vectorized documents (independent variable) that predict the rating/score of that particular document (dependent variable). 
+
+\subsubsection{Text Aggregator}
+This component is responsible for merging multiple different streams of data into a unified stream that can be used to predict sentiment ratings of unlabeled documents.
+
+\subsubsection{Message Broker Queue}
+This component acts as the arbiter for the incoming unlabeled documents and each document is read from the queue and is processed in turn.
+
+\subsubsection{Stream Processor}
+The stream processor is responsible for reading and processing the unlabeled documents, predicting the score/rating of each incoming document, and forwarding the scores for further usage.
+
+\subsubsection{Time-Series Database}
+A time series database is optimized to handled collections of data objects that are indexed by time. It supports fast querying of data over temporal scan ranges and is ideal for time-series based analytics
+
+\subsubsection{Analytics Dashboard}
+The analytics dashboard provides a visual representation of overall sentiment over time, and supports setting alerts to warn the end-user when overall sentiment dips below a certain user-defined threshold.
+
+\subsection{Component Interactions} \label{Component Interactions}
+A simple processor reads the labeled documents and feeds it into the Document embedding tool, which, in turn, emits a representation of each of the labeled documents as a vector. The vectors representations of the documents are now associated with their corresponding scores and the vector representations and the scores fed together into the ML Modeling tool to generate Linear Regression and Support Vector Regression models. These models are then 'pickled' or flushed to disk, to be used by the real-time prediction module. Along with these models, the trained Document embedding model is also flushed to disk.
+
+Once these models are flushed to disk, the system can kickstart it's real-time prediction framework. The unlabeled documents are published to the message broker queue, to which the daemon component of the architecture is subcribed to. It processes lists of documents in micro-batches and emits a list of scores. These scores are posted in real-time to a time-series database, which in turn, acts as the data backend for the analytical dashboard.
+
+The analytical dashboard provides a line graph of the sentiment trend over time, and can also provided for additional features such as Bollinger Band plotting, and threshold-breach based alerts.
+
+
+% \begin{figure*}[ht]
+% \centering
+% \includegraphics[width=\textwidth]{images/rapid_rate_system_arch_1.png}
+% \caption{Rapid-Rate System Architecture}
+% \label{fig:system-architecture}
+% \end{figure*}
 
 
 \section{Implementation}
+
 
 \subsection{Offline learning model}
 
 \subsection{Online real-time prediction engine}
 
 \subsection{Tech stack}
+The tech stack used for the implementation of the framework is comprised of the following components:
 
 
 \section{Evaluation}
 
 \subsection{Testbed}
+The testbed is integrated into the actual framework, and the processors for model training 
+
+\subsection{Metrics}
+The experimental results are being evaluated for goodness of model fit using the co-efficient of determination metric \cite{jaeger1990statistics}.
+The co-efficient of determination conveys the quantized amount of signal of the input vector that is being captured by the trained model by validating it against a test set. The value of the co-efficient of determination is derived from the below equation:
+
+\begin{equation}
+\displaystyle SS_{tot} = \sum_{i} (y_i - \hat{y})^2
+\end{equation}
+
+\begin{equation}
+\displaystyle SS_{res} = \sum_{i} (f(x)_i - \hat{y})^2
+\end{equation}
+
+\begin{equation}
+\displaystyle R^2 = 1 - \frac{SS_{res}}{SS_{tot}}
+\end{equation}
+
+The $R^2$ score is the same as the co-efficient of determination.
+
 
 \subsection{Experimental Results}
+
 
 
 \section{Conclusions}
