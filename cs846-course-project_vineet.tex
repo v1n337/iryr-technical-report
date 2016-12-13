@@ -6,6 +6,8 @@
 \usepackage{array}
 \usepackage{url}
 \usepackage{listings}
+\usepackage{tabu}
+
 
 \begin{document}
 \title{Rapid-Rate: A Framework for Semi-supervised \\Real-time Sentiment Trend Detection\\ in Unstructured Big Data}
@@ -34,6 +36,8 @@ Commercial establishments (like restaurants, service centers) have several sourc
 
 \IEEEpeerreviewmaketitle
 
+\vspace{5mm}
+
 \section{Introduction}
 Document labeling and attribute discovery is already a widely researched area in the domain of natural language processing. The most common use-cases of document classification are product \& service review rating predictions, automatic grading of essays, spam detection, plagiarism detection et al. However, most of the current approaches used for these tasks rely on lexicon based methods with a centralized source indicating the weights of a word towards a set of emotion or sentiment. Some other approaches use N-gram count vectorization approaches and document level similarity scores like TF-IDF. However, N-gram approaches only partially model the language context probabilities i.e. the probably of a word occurring next in the corpus depends only on the n-1 words that precede it. Word2Vec's model take additional word contexts into account, as described in section \ref{Word2Vec}.
 
@@ -47,13 +51,14 @@ However, models like these are difficult to train for the following reasons:
 All of the processes described above are time-consuming and tedious. The objective of this work is to implement and evaluate a strategy to effectively eliminate the above steps from the process of training a language model. The proposition is to rely on unsupervised strategies like continuous bag-of-words and the skip-gram model to learn word embeddings, that will serve as a syntactic and semantic proxy for the text being processed. The features thus learnt, can then be used to train regression models to predict text scores.
 
 
-% \begin{figure*}[ht]
-% \centering
-% \includegraphics[width=\textwidth]{images/word2vec_1.png}
-% \caption{Word2Vec Vector Space Intuition\cite{tensorflow_word2vec}}
-% \label{fig:word2vec-vectorspace-intuition}
-% \end{figure*}
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=\textwidth]{images/word2vec_1.png}
+\caption{Word2Vec Vector Space Intuition\cite{tensorflow_word2vec}}
+\label{fig:word2vec-vectorspace-intuition}
+\end{figure*}
 
+\vspace{5mm}
 
 \section{Similar Work}
 This section discusses the previous work done on mining and analytics pertaining to text data.
@@ -62,14 +67,16 @@ Most of the similar work in the area of learning word-embeddings is related to c
 
 Most of the current work in usage of regression techniques on text content are related to metadata or features extraction \cite{su2015genetic} \cite{weissman2016natural}. Similarly there have been several studies to identify document tags using classification techniques\cite{bespalov2011sentiment}\cite{pang2002thumbs}. However, there is a relative absence of studies to evaluate the accuracy of regression models that try to predict a document score using a continuous-function model.
 
-As far the the authors are aware, there has been no similar work to test the regression accuracy of paragraph vectors in an experimental research setup before. Hence, the evaluation of the effectiveness of this approach will be assessed using a generic evaluation metric.
+As far the the author is aware, there has been no similar work to test the regression accuracy of paragraph vectors in an experimental research setup before. Hence, the evaluation of the effectiveness of this approach will be assessed using a generic evaluation metric.
 
+\vspace{5mm}
 
 \section{Problem Statement}
 The problem statement can be formulated as an evaluation of Paragraph Vectors \cite{le2014distributed} on a document score regression task to evaluate the accuracy of the prediction model that can be built using the shallow neural network language model learning algorithm previously descibed by Mikolov et al. \cite{mikolov2013efficient}, which was primarily used to unsupervisedly train word embeddings.
 
 The prediction scores will be evaluated using the co-efficient of determination metric, also known as the R\textsuperscript{2} metric \cite{cameron1997r}. The hypothesis is to prove that the document ratings have a positive correlation with the vectorized versions of the document text content, because the semantics of positive and negative reviews are expected to be captured by the shallow neural network trained on the corpus. The expected R\textsuperscript{2} metric score being over 0, will confirm the hypothesis, and a negative value will disprove it.
 
+\vspace{5mm}
 
 \section{Motivation}
 The motivation for the project is to prove that a substantial amount of the semantic signal about sentiment with respect to a product or service, as extracted from a snippet or document of text, should prove to be a good indicator of the labeled document scores. If proven to be true, the objective includes building a real-time streaming framework, which can analyze unseen reviews from the previously provided exampled of unlabeled data, and be able to emit a score-prediction with minimal processing delays. This framework can be set-up on commodity hardware, and a given business can simply pipe their unlabeled reviews or articles into the system, and expect a graphical representation of the sentiment about a particular topic that is updated in real-time. The framework also allows rules to be set for alerts, so, for instance, if the approval rating of a particular business falls very low, an email alert could be triggered to the business decision makers to respond quicker to the negative sentiment, a process which would otherwise span several business days.
@@ -82,12 +89,12 @@ The statistical learning formulation of the problem statement in this study, can
 \end{itemize}
 
 
-% \begin{figure*}[ht]
-% \centering
-% \includegraphics[width=400pt]{images/docvec_1.png}
-% \caption{Paragraph Vector Learning Framework\cite{mikolov2013distributed}}
-% \label{fig:paragraph-vector-framework}
-% \end{figure*}
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=400pt]{images/docvec_1.png}
+\caption{Paragraph Vector Learning Framework\cite{mikolov2013distributed}}
+\label{fig:paragraph-vector-framework}
+\end{figure*}
 
 
 \subsection{Continuous function learning}
@@ -112,6 +119,8 @@ A continuous function is defined as one in which an infinitely small change for 
 
 Continuous functions are typically needed when the response variable calculated is a measurable quantity, rather than a class label. Since sentiment as fine-grained values offer more depth in terms of sentiment insight \cite{drake2008sentiment}, the study in this paper is formulated as a regression problem.
 
+\vspace{5mm}
+
 \section{Challenges}
 
 \subsection{Language Model Learning}
@@ -120,6 +129,8 @@ Continuous functions are typically needed when the response variable calculated 
 
 \subsection{Deep Learning}
 
+
+\vspace{5mm}
 
 \section{Background}
 
@@ -158,6 +169,8 @@ The input parameters to the support vector regressor remain the same as those de
 \subsection{Horizontal Scaling with Spark Streaming}
 This study used Apache Spark Streaming for the real-time processing of the unlabeled document data. Discretized streams (D-Streams), a stream programming model for large clusters that provides consistency, efficient fault recovery, and powerful integration with batch systems is the core offering of Spark Streaming. The key idea is to treat streaming as a series of short batch jobs, and bring down the latency of these jobs as much as possible. This brings many of the benefits of batch processing models to stream processing, including clear consistency semantics and a new parallel recovery technique that is a truly cost-efficient recovery technique for stream processing in large clusters\cite{zaharia2012discretized}.
 
+\vspace{5mm}
+
 \section{System Architecture}
 The system architecture is depicted in Fig. \ref{fig:system-architecture}
 
@@ -175,32 +188,41 @@ This is a library used by the framework to infer a model from the vectorized doc
 This component is responsible for merging multiple different streams of data into a unified stream that can be used to predict sentiment ratings of unlabeled documents.
 
 \subsubsection{Message Broker Queue}
-This component acts as the arbiter for the incoming unlabeled documents and each document is read from the queue and is processed in turn.
+This component acts as the arbiter for the incoming unlabeled documents. 
+Each document is read from the queue and is processed in turn.
 
 \subsubsection{Stream Processor}
 The stream processor is responsible for reading and processing the unlabeled documents, predicting the score/rating of each incoming document, and forwarding the scores for further usage.
 
 \subsubsection{Time-Series Database}
-A time series database is optimized to handled collections of data objects that are indexed by time. It supports fast querying of data over temporal scan ranges and is ideal for time-series based analytics
+A time series database is optimized to handled collections of data objects that are indexed by time. 
+It supports fast querying of data over temporal scan ranges and is ideal for time-series based analytics
 
 \subsubsection{Analytics Dashboard}
 The analytics dashboard provides a visual representation of overall sentiment over time, and supports setting alerts to warn the end-user when overall sentiment dips below a certain user-defined threshold.
 
 \subsection{Component Interactions} \label{Component Interactions}
-A simple processor reads the labeled documents and feeds it into the Document embedding tool, which, in turn, emits a representation of each of the labeled documents as a vector. The vectors representations of the documents are now associated with their corresponding scores and the vector representations and the scores fed together into the ML Modeling tool to generate Linear Regression and Support Vector Regression models. These models are then 'pickled' or flushed to disk, to be used by the real-time prediction module. Along with these models, the trained Document embedding model is also flushed to disk.
+A simple processor reads the labeled documents and feeds it into the Document embedding tool, which, in turn, emits a representation of each of the labeled documents as a vector.
+The vectors representations of the documents are now associated with their corresponding scores and the vector representations and the scores fed together into the ML Modeling tool to generate Linear Regression and Support Vector Regression models. 
+These models are then `pickled' or flushed to disk, to be used by the real-time prediction module. 
+Along with these models, the trained Document embedding model is also flushed to disk.
 
-Once these models are flushed to disk, the system can kickstart it's real-time prediction framework. The unlabeled documents are published to the message broker queue, to which the daemon component of the architecture is subcribed to. It processes lists of documents in micro-batches and emits a list of scores. These scores are posted in real-time to a time-series database, which in turn, acts as the data backend for the analytical dashboard.
+Once these models are flushed to disk, the system can kickstart it's real-time prediction framework. 
+The unlabeled documents are published to the message broker queue, to which the daemon component of the architecture is subcribed to. 
+It processes lists of documents in micro-batches and emits a list of scores. 
+These scores are posted in real-time to a time-series database, which in turn, acts as the data backend for the analytical dashboard.
 
 The analytical dashboard provides a line graph of the sentiment trend over time, and can also provided for additional features such as Bollinger Band plotting, and threshold-breach based alerts.
 
 
-% \begin{figure*}[ht]
-% \centering
-% \includegraphics[width=\textwidth]{images/rapid_rate_system_arch_1.png}
-% \caption{Rapid-Rate System Architecture}
-% \label{fig:system-architecture}
-% \end{figure*}
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=\textwidth]{images/rapid_rate_system_arch_1.png}
+\caption{Rapid-Rate System Architecture}
+\label{fig:system-architecture}
+\end{figure*}
 
+\vspace{5mm}
 
 \section{Implementation}
 
@@ -212,15 +234,19 @@ The analytical dashboard provides a line graph of the sentiment trend over time,
 \subsection{Tech stack}
 The tech stack used for the implementation of the framework is comprised of the following components:
 
+\vspace{5mm}
 
 \section{Evaluation}
 
 \subsection{Testbed}
-The testbed is integrated into the actual framework, and the processors for model training 
+The testbed is integrated into the actual framework, and the processors for model training.
+The tests were carried out on an Amazon document corpus of 600,000 unique product reviews.
+The complete dataset of Amazon reviews is openly accessible.
 
 \subsection{Metrics}
 The experimental results are being evaluated for goodness of model fit using the co-efficient of determination metric \cite{jaeger1990statistics}.
-The co-efficient of determination conveys the quantized amount of signal of the input vector that is being captured by the trained model by validating it against a test set. The value of the co-efficient of determination is derived from the below equation:
+The co-efficient of determination conveys the quantized amount of signal of the input vector that is being captured by the trained model by validating it against a test set. 
+The value of the co-efficient of determination is derived from the below equations:
 
 \begin{equation}
 \displaystyle SS_{tot} = \sum_{i} (y_i - \hat{y})^2
@@ -230,26 +256,64 @@ The co-efficient of determination conveys the quantized amount of signal of the 
 \displaystyle SS_{res} = \sum_{i} (f(x)_i - \hat{y})^2
 \end{equation}
 
-\begin{equation}
+\begin{equation} \label{eq:r_squared}
 \displaystyle R^2 = 1 - \frac{SS_{res}}{SS_{tot}}
 \end{equation}
 
-The $R^2$ score is the same as the co-efficient of determination.
+The $R^2$ score derived in Equation \ref{eq:r_squared} is the the co-efficient of determination use to predict the goodness of fit for each of the machine learning models learnt.
 
 
 \subsection{Experimental Results}
 
+The accuracy schores of the experimental results are presented in Table \ref{results}. The score presented in this table is the co-efficient of determination or $R^2$ score.
 
+\begin{table}[ht] \caption{Evaluation results} \label{results}
+    \centering
+    \resizebox{0.35\textwidth}{!}{
+        \begin{tabular}{| c | c |}
+            \hline
+            \textbf{Modeling Method} & \textbf{Score} \\
+            \hline
+            Linear Regression & 0.31 \\
+            \hline
+            Support Vector Regression & 0.25 \\
+            \hline
+        \end{tabular}
+    }
+\end{table}
+
+\vspace{5mm}
 
 \section{Conclusions}
+To summarize, this research project encapsulated the below objectives:
+\begin{itemize}
+    \item Evaluating the usage of document embeddings for a regression task
+    \item Building a framework to predict real-time sentiment trends
+\end{itemize}
 
+Given that the attempt is to infer sentiment from unstructured data, the result of having a positive $R^2$ value is promising (Table \ref{results}).
+It indicates that the model captures a significant amount of the signal present in the independent variable.
+It can hence be relied to a degree of confidence to predict a close enough value to the actual intended document sentiment.
+
+Additionally, this work has resulted in a generic framework that can be adopted to build a sentiment analytics dashboard on a user friendly interface. 
+This framework can be extended to processes any type of document content both for training and for the real-time sentiment prediction module.
+
+The overall framework has been built using state-of-the-art product offering in neural-net document embedding libraries, distributed stream processing in Spark, distributed queue architecture in Kafka, and the stable machine learning framework which is a part of scikit-learn. 
+
+The author believes this framework can be used both in industrial settings as well as an evaluation testbed for any document embedding and machine learning libraries used as an ensemble.
+
+\vspace{5mm}
 
 \section{Future Work}
+With respect to the statistical models trained, the current approach supports only the simplest regression models i.e. Linear Regression and Support Vector Regression (SVR). 
+This could be expanded to offer additional training mechanisms
 
+\vspace{5mm}
 
 \section{Acknowledgments}
-The authors would like to thank...
+The author would like to thank ...
 
+\vspace{5mm}
 
 \bibliographystyle{abbrv}
 \bibliography{cs846-course-project_vineet}
