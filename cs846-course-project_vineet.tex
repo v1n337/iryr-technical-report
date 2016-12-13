@@ -14,13 +14,13 @@
 
 
 \author{
-	\IEEEauthorblockN{Vineet John}
-	\IEEEauthorblockA{
-		David R. Cheriton School of Computer Science\\
-		University of Waterloo\\
-		Waterloo, Ontario N2L 3G1\\
-		Email: vineet.john@uwaterloo.ca
-	}
+    \IEEEauthorblockN{Vineet John}
+    \IEEEauthorblockA{
+        David R. Cheriton School of Computer Science\\
+        University of Waterloo\\
+        Waterloo, Ontario N2L 3G1\\
+        Email: vineet.john@uwaterloo.ca
+    }
 }
 
 \maketitle
@@ -105,30 +105,30 @@ The motivation for the project is to prove that a substantial amount of the sema
     \subsection{Semi-supervised Learning}
     The statistical learning formulation of the problem statement in this study, can be broken down into two distinct segments, namely:
     \begin{itemize}
-    	\item Learning a projection of the document into vector space. This projection will act as a mathematical proxy for the sentiment that the document is trying to convey. This segment is completely unsupervised, and does not require any tuning or pre-processing to compute.
-      \item Learning a relation between the aforementioned projection of each labeled document, and the associated score or label. This segment of the learning pipeline is supervised relies on previously scored or rated documents.
+        \item Learning a projection of the document into vector space. This projection will act as a mathematical proxy for the sentiment that the document is trying to convey. This segment is completely unsupervised, and does not require any tuning or pre-processing to compute.
+        \item Learning a relation between the aforementioned projection of each labeled document, and the associated score or label. This segment of the learning pipeline is supervised relies on previously scored or rated documents.
     \end{itemize}
 
     \subsection{Continuous function learning}
     Assume that a given output variable \textit{y} depends on a variable \textit{x} such that
-        \begin{equation}
-            \displaystyle f(x) = \beta x + c + \epsilon
-        \end{equation}
+    \begin{equation}
+        \displaystyle f(x) = \beta x + c + \epsilon
+    \end{equation}
 
-        \begin{equation}
-            \displaystyle y = f(x)
-        \end{equation}
+    \begin{equation}
+        \displaystyle y = f(x)
+    \end{equation}
     where x represents a vector of independent variables, y represents the dependant or response variable, $\beta$ and c are model vector space functions that are applied to x to map it to y, and $\epsilon$ is the error term.
 
     Now, assume that the variable \textit{x} increases by a small amount $\Delta x$, and that $x_0$ was the initial value, such that the value of \textit{x} is updated to
-        \begin{equation}
-        \displaystyle \Delta x = x - x_0
-        \end{equation}
+    \begin{equation}
+    \displaystyle \Delta x = x - x_0
+    \end{equation}
 
     A continuous function is defined as one in which an infinitely small change for the input variable x results in a corresponding infinitely small change in the response variable y \cite{continuous_function}, which can be expressed as
-        \begin{equation}
-        \displaystyle \Delta y = f(x) - f(x_0)
-        \end{equation}
+    \begin{equation}
+    \displaystyle \Delta y = f(x) - f(x_0)
+    \end{equation}
 
     Continuous functions are typically needed when the response variable calculated is a measurable quantity, rather than a class label. Since sentiment as fine-grained values offer more depth in terms of sentiment insight \cite{drake2008sentiment}, the study in this paper is formulated as a regression problem.
 
@@ -330,12 +330,9 @@ The chosen tech-stack is state-of-the-art for framework design and development, 
 
     The positive scores of both the experiment analyses indicate that the model does capture a good amount of the sentiment in each of the labeled documents, and ensures a reasonable amount of accuracy for the prediction of the real-time unlabeled documents.
 
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.45\textwidth]{images/code_profiling.png}
-        \caption{Code Profiling Statistics}
-        \label{fig:code-profiling}
-    \end{figure}
+    As indicated in Figure \ref{fig:accuracy-v-data}, the current trend seems to suggest a polynomial improvement on increasing the number of documents to be trained on. 
+    The initial experimentation was done on a corpus of 100,000 labeled documents. 
+
 
     \begin{figure*}[ht]
         \centering
@@ -343,6 +340,13 @@ The chosen tech-stack is state-of-the-art for framework design and development, 
         \caption{Accuracy vs. Data}
         \label{fig:accuracy-v-data}
     \end{figure*}
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.45\textwidth]{images/code_profiling.png}
+        \caption{Code Profiling Statistics}
+        \label{fig:code-profiling}
+    \end{figure}
 
     Also, from the code profiling information presenting in Figure \ref{fig:code-profiling}, it is evident that the unsupervised learning segement of obtaining the document vectors of the labeled documents is the longest running part of the Offline learning module. In comparison, the document processing and statistical model training is negligible.
 
