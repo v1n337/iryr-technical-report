@@ -81,10 +81,10 @@
 
 \vspace{5mm}
 
-\section{Problem Statement}
-    The problem statement can be formulated as an evaluation of Paragraph Vectors \cite{le2014distributed} on a document score regression task to evaluate the accuracy of the prediction model that can be built using the shallow neural network language model learning algorithm previously descibed by Mikolov et al. \cite{mikolov2013efficient}, which was primarily used to unsupervisedly train word embeddings.
+\section{Problem Statement} \label{problem_statment}
+    The problem statement can be formulated as an evaluation of Paragraph Vectors\cite{le2014distributed} on a document score regression task to evaluate the accuracy of the prediction model that can be built using the shallow neural network language model learning algorithm previously descibed by Mikolov et al. \cite{mikolov2013efficient}, which was primarily used to unsupervisedly train word embeddings.
 
-    The prediction scores will be evaluated using the co-efficient of determination metric, also known as the R\textsuperscript{2} metric \cite{cameron1997r}. The hypothesis is to prove that the document ratings have a positive correlation with the vectorized versions of the document text content, because the semantics of positive and negative reviews are expected to be captured by the shallow neural network trained on the corpus. The expected R\textsuperscript{2} metric score being over 0, will confirm the hypothesis, and a negative value will disprove it.
+    The prediction scores will be evaluated using the co-efficient of determination metric, also known as the R\textsuperscript{2} metric \cite{cameron1997r}. The hypothesis is to prove that the document ratings have a positive correlation with the vectorized versions of the document text content, because the semantics of positive and negative reviews are expected to be captured by the shallow neural network trained on the corpus. The expected R\textsuperscript{2} metric score being over 0, will confirm the hypothesis, and a negative value will contradict it.
 
 \begin{figure*}[ht] \label{fig:paragraph-vector-framework}
     \centering
@@ -132,7 +132,7 @@
 \section{Challenges}
 
     \subsection{Language Model Learning}
-        Language understanding is still not yet a completely solved problem in computer science, primarily because of the variety
+        
 
     \subsection{Unstructured Big Data}
 
@@ -357,7 +357,7 @@
 
     The overall framework has been built using state-of-the-art product offering in neural-net document embedding libraries, distributed stream processing in Spark, distributed queue architecture in Kafka, and the stable machine learning framework which is a part of scikit-learn. 
 
-    The author believes this framework can be used both in industrial settings as well as an evaluation testbed for any document embedding and machine learning libraries used as an ensemble.
+    The author believes this framework can be used both in industrial settings as well as an evaluation testbed for any document embedding and machine learning libraries used as an ensemble. The hypothesis made prior to undertaking this research project, as described in the Problem Statement (Section \ref{problem_statment}) has been validated and proved to be true.
 
 \vspace{5mm}
 
