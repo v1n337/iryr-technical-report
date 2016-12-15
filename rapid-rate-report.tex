@@ -128,8 +128,8 @@
 
 \vspace{5mm}
 
-\section{Challenges}
-    The section elaborates on the challenges faced during the implementation of this research project, and the proposed strategies used to tackle these challenges or minimize their impact on the final outcome of the experiment.
+\section{Natural Language Understading Domain Challenges}
+    The section elaborates on the NLP domain-specific challenges faced during the implementation of this research project, and the proposed strategies used to tackle these challenges or minimize their impact on the final outcome of the experiment.
 
     \subsection{Unstructured Big Data}
         Unstructured data is defined as data, large amounts of it, in this case, which do not abide by a strict schema\cite{buneman1996query}. This happens when the process of data generation itself is unmoderated and does not impose too many constraints on the type of data allowed. It could also be that the data contains soft links or references to other entities within the data. As such, the onus is on the application to process large amount of unstructured data and attempt to extract some meaning and relations from it.
@@ -138,15 +138,25 @@
         Language model learning is complicated because the two chief modeling approaches currently used have inherent limitations when it comes to being able to be used reliably across the board:
         
         \subsubsection{Lexicon based model learning}
-        Lexicon based models are reliable for one-off tasks, but they require hand-annotation of the polarity of words, and an over-dependence on the fact that the lexicon of words needs to be updated regularly as and when it comes across new words. This requires time and effort and is rather tedious. This challenge is addressed in the research project, by using an unsupervised method to learn the document vector representations, and not relying on any lexicon for semantics details.
+            Lexicon based models are reliable for one-off tasks, but they require hand-annotation of the polarity of words, and an over-dependence on the fact that the lexicon of words needs to be updated regularly as and when it comes across new words. This requires time and effort and is rather tedious. This challenge is addressed in the research project, by using an unsupervised method to learn the document vector representations, and not relying on any lexicon for semantics details.
 
         \subsubsection{Statistical model based learning}
-        TF-IDF and similar document scoring approaches, are based on the bag-of-words model. Hence, it does not capture position in text, semantics, co-occurrences in different documents, and other such features. Also, this shortcoming means that it cannot capture semantics of a word. It relies heavily on occurrence count across the entire corpus of documents.
+            TF-IDF and similar document scoring approaches, are based on the bag-of-words model. Hence, it does not capture position in text, semantics, co-occurrences in different documents, and other such features. Also, this shortcoming means that it cannot capture semantics of a word. It relies heavily on occurrence count across the entire corpus of documents.
+
+        \subsubsection{Cross domain applicability}
+            One of the major drawbacks of statistical model based learning in particular is that 
 
     \subsection{Deep Learning}
         The challenge with using deep learning for the model training is there deep learning models typically take hours to even days to completely train. If a system needs to be setup from scratch, deep learning does increase the time to market by being notoriously difficult to train. This challenge addressed by incurring only a one-time cost of training the labeled. Future iterations of the training does not block the current execution of the real-time prediction component.
 
 \vspace{5mm}
+
+\section{Engineering Design Challenges}
+    
+    \subsection{Distributed Setup}
+
+    \subsection{Separate chunks scheduling}
+
 
 \begin{figure*}[ht] \label{fig:system-architecture}
     \centering
@@ -472,6 +482,6 @@
 \vspace{5mm}
 
 \bibliographystyle{abbrv}
-\bibliography{cs846-course-project_vineet}
+\bibliography{rapid-rate-report}
 
 \end{document}
