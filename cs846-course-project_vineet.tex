@@ -2,11 +2,9 @@
 
 \usepackage{graphicx}
 \usepackage{amsmath}
-\usepackage{algorithmic}
-\usepackage{array}
 \usepackage{url}
-\usepackage{listings}
 \usepackage{tabu}
+\usepackage{algorithm2e}
 
 
 \begin{document}
@@ -139,14 +137,14 @@
     \subsection{Language Model Learning}
         Language model learning is complicated because the two chief modeling approaches currently used have inherent limitations when it comes to being able to be used reliably across the board:
         
-        \subsubsection{Lexicon based models}
-        Lexicon based models are reliable for one-off tasks, but they require hand-annotation of the polarity of words, and an over-reliance on the fact that the lexicon of words is updated regularly as and when it comes across new words.
+        \subsubsection{Lexicon based model learning}
+        Lexicon based models are reliable for one-off tasks, but they require hand-annotation of the polarity of words, and an over-dependence on the fact that the lexicon of words needs to be updated regularly as and when it comes across new words. This requires time and effort and is rather tedious. This challenge is addressed in the research project, by using an unsupervised method to learn the document vector representations, and not relying on any lexicon for semantics details.
 
-        \subsubsection{Statistical models}
-        The problem with statistical models is the over-reliance on word ordering for higher-order n-gram models.
+        \subsubsection{Statistical model based learning}
+        TF-IDF and similar document scoring approaches, are based on the bag-of-words model. Hence, it does not capture position in text, semantics, co-occurrences in different documents, and other such features. Also, this shortcoming means that it cannot capture semantics of a word. It relies heavily on occurrence count across the entire corpus of documents.
 
     \subsection{Deep Learning}
-        The challenge with using deep learning for the model training is there deep learning models typically take hours to even days to completely train. If a system needs to be setup from scratch, deep learning does increase the time to market by being notoriously difficult to train.
+        The challenge with using deep learning for the model training is there deep learning models typically take hours to even days to completely train. If a system needs to be setup from scratch, deep learning does increase the time to market by being notoriously difficult to train. This challenge addressed by incurring only a one-time cost of training the labeled. Future iterations of the training does not block the current execution of the real-time prediction component.
 
 \vspace{5mm}
 
@@ -156,8 +154,14 @@
     \caption{Rapid-Rate System Architecture}
 \end{figure*}
 
+\begin{figure*}[ht] \label{fig:code-profiling}
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/code_profiling.png}
+    \caption{Code Profiling Statistics}
+\end{figure*}
+
 \section{Background}
-    The sections touches 
+    The sections touches upon the background information that needs to be known prior to doing a deep-dive into the details of the research study and implementation done for this project.
 
     \subsection{Word2Vec} \label{Word2Vec}
         Word vectors are a step-away from the traditional bag-of-words + n-gram model. The latter ends up losing
@@ -242,22 +246,103 @@
 
 \vspace{5mm}
 
-\begin{figure*}[ht]
+\begin{algorithm}[ht] \label{offline_module}
+    \KwData{$document\_corpus$}
+    \KwResult{$document\_vector\_model$, $stat\_learning\_model$}
+    \DontPrintSemicolon 
+    \;
+    initialize $training\_passes$\;
+    initialize $file\_iterator$\;
+    initialize $docvec\_model$\;
+    initialize $ml\_model$\;
+    \;
+    \For{$line \in file\_iterator$}{
+        $parsed\_line = parse\_review(line)$\;
+        $
+        add\_to\_docvec\_model\_corpus($\\
+        $\qquad parsed\_line.document\_text$\\
+        $)$\;
+        \For{$count \in training\_passes$}{
+            $docvec\_model.train()$
+        }
+    }
+    \;
+    \For{$line \in file\_iterator$}{
+        $parsed\_line = parse\_review(line)$\;
+        $add\_to\_document\_scores($\\
+        $\qquad parsed\_line.document\_score$\\
+        $)$\;
+    }
+    \;
+    \For{$i \in documents.count$}{
+        $x_docvecs[i] = docvec\_model.get\_vector(i)$\;
+        $y_scores[i] = document_scores[i]$\;
+    }
+    \;
+    $ml\_model = model.learn(x_docvecs, y_scores)$\;
+    $ml\_model.predict\_accuracy\_score(y_test, y_true)$\;
+    \;
+    $docvec\_model.save\_to\_disk()$\;
+    $ml\_model.save\_to\_disk()$\;
+    \;
+    \caption{Off-line learning algorithm}
+\end{algorithm}
+
+\begin{algorithm}[ht] \label{online_module}
+    \KwData{$document\_vector\_model$, $stat\_learning\_model$}
+    \KwResult{$distributed\_queue\_uri$}
+    \DontPrintSemicolon 
+    \;
+    initialize $kafka\_queue\_instance$\;
+    initialize $spark\_context$\;
+    initialize $spark\_streaming\_context$\;
+    \;
+    initialize $docvec\_model$\;
+    initialize $ml\_model$\;
+    initialize $kafka\_stream$\;
+    \;
+    \uIf{$new\_documents \in kafka\_queue\_instance$}{
+        initialize $messages\_rdd$
+        \For{$rdd \in messages\_rdd$}{
+            $rdd.infer\_sentiment(docvec\_model, ml\_model)$
+        }
+    }
+    \;
+    \caption{Off-line learning algorithm}
+\end{algorithm}
+
+\begin{algorithm}[ht] \label{infer_sentiment}
+    \KwData{$rdd$, $docvec\_model$, $ml\_model$}
+    \KwResult{$null$}
+    \DontPrintSemicolon 
+    initialize $opentsdb\_connection$
+    \;
+    \For{$(key, message) \in rdd.collect()$}{
+        $tokenized\_document = message.tokenize()$\;
+        $document\_vector = docvec\_model.infer\_vector(tokenized\_document)$\;
+        $predicted\_score = ml\_model.predict(document\_vector)$\;
+        $tsdb\_payload = generate\_tsdb\_payload($\\ \qquad $predicted\_score, time.now()$\\$)$
+    }
+    \;
+    \caption{Sentiment Inference algorithm}
+\end{algorithm}
+
+\begin{figure*}[ht] \label{fig:accuracy-v-data}
     \centering
-    \includegraphics[width=0.8\textwidth]{images/code_profiling.png}
-    \caption{Code Profiling Statistics}
-    \label{fig:code-profiling}
+    \includegraphics[width=\textwidth]{images/accuracy-vs-data.png}
+    \caption{Coefficient of Determination vs. Training corpus volume}
 \end{figure*}
 
 \section{Implementation}
+    This section briefly discusses the implementation specifics chosen for the code-base, and the architectural decisions that govern this particular framework. This is helpful to know in case a new application to be chosen to act as a pipeline into, or a sink of the data processed by the Rapid-Rate framework.
 
     The primary language of implementation of this research project is Python, and the other frameworks and components have been described in the Tech Stack section. (Section \ref{Tech stack})
 
-    \subsection{Off-line learning model}
-
+    \subsection{Off-line learning module}
+        The off-line learning module is comprised of the shallow neural-network implementation using the library Gensim\ref{gensim}. The algorithm of this module is shown in Algorithm \ref{offline_module}.
 
     \subsection{On-line real-time prediction engine}
-
+        The on-line prediction module is the real-time component submitted to Spark (Section \ref{spark}) workers. Each of the spark workers listen to a distributed queue in Kafka (Section \ref{kafka}). As and when the unlabeled documents are streamed, the engine reads the streamed data and predicts a score before posting it into OpenTSDB (Section \ref{opentsdb}). The general algorithm for handling the streaming data is described in Algorithm \ref{online_module}. A sub-section of this module, the algorithm used to infer sentiment, is described in Algorithm \ref{infer_sentiment}.
 
     \subsection{Tech stack} \label{Tech stack}
         The tech stack used for the implementation of the framework is comprised of:
@@ -265,19 +350,19 @@
         \subsubsection{Python}
             Processing code, pipelining, real-time prediction code\cite{python}.
 
-        \subsubsection{Gensim}
+        \subsubsection{Gensim} \label{gensim}
             Python library. The Doc2Vec class in Gensim is used to learn the document representations\cite{doc2vec_api}.
         
         \subsubsection{Scikit-Learn}
             Python library. The linear regression and support vector regression is done using this library\cite{scikit_learn}.
         
-        \subsubsection{Apache Kafka}
+        \subsubsection{Apache Kafka} \label{kafka}
             Distributed messaging queue. This is used to receive new unlabeled documents, and is also a potential sink for dumping the results of the result ratings of unlabeled documents\cite{kreps2011kafka}.
         
-        \subsubsection{Apache Spark Streaming}
+        \subsubsection{Apache Spark Streaming} \label{spark}
             The real-time prediction component written in Python runs on Spark Streaming\cite{zaharia2012discretized}.
         
-        \subsubsection{OpenTSDB}
+        \subsubsection{OpenTSDB} \label{opentsdb}
             Time series database. This database houses each individually predicted document rating and their corresponding time-stamps\cite{opentsdb}.
         
         \subsubsection{Bosun}
@@ -289,12 +374,6 @@
     \centering
     \includegraphics[width=0.9\textwidth]{images/bosun_dash_1.png}
     \caption{Time Series Analytics Dashboard}
-\end{figure*}
-
-\begin{figure*}[ht] \label{fig:accuracy-v-data}
-    \centering
-    \includegraphics[width=\textwidth]{images/accuracy-vs-data.png}
-    \caption{Coefficient of Determination vs. Training corpus volume}
 \end{figure*}
 
 \vspace{5mm}
