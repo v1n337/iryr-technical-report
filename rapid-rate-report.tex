@@ -72,18 +72,24 @@
     This section discusses the previous work done on mining and analytics pertaining to text data.
 
     Most of the similar work in the area of learning word-embeddings is related to classifying documents into a given set of labels or topics. 
-    The purpose of this study is to extend the usage of the document vector representation to demonstrating its usage when the response variable (the output of a learning task) a continuous function (document-scoring) rather than discrete values (document classification). This work can be viewed as a generalization of the previous approaches, because this study aims to predict fine-grained document scores, rather than coarse document classifications.
+    The purpose of this study is to extend the usage of the document vector representation to demonstrating its usage when the response variable (the output of a learning task) a continuous function (document-scoring) rather than discrete values (document classification). 
+    This work can be viewed as a generalization of the previous approaches, because this study aims to predict fine-grained document scores, rather than coarse document classifications.
 
-    Most of the current work in usage of regression techniques on text content are related to meta-data or features extraction \cite{su2015genetic} \cite{weissman2016natural}. Similarly there have been several studies to identify document tags using classification techniques\cite{bespalov2011sentiment}\cite{pang2002thumbs}. However, there is a relative absence of studies to evaluate the accuracy of regression models that try to predict a document score using a continuous-function model.
+    Most of the current work in usage of regression techniques on text content are related to meta-data or features extraction \cite{su2015genetic} \cite{weissman2016natural}.
+    Similarly there have been several studies to identify document tags using classification techniques\cite{bespalov2011sentiment}\cite{pang2002thumbs}. 
+    However, there is a relative absence of studies to evaluate the accuracy of regression models that try to predict a document score using a continuous-function model.
 
-    As far the the author is aware, there has been no similar work to test the regression accuracy of paragraph vectors in an experimental research setup before. Hence, the evaluation of the effectiveness of this approach will be assessed using a generic evaluation metric.
+    As far the the author is aware, there has been no similar work to test the regression accuracy of paragraph vectors in an experimental research setup before, and is hence, novel in that respect.
+    Hence, the evaluation of the effectiveness of this approach will be assessed using a generic evaluation metric, the coefficient of determination score.
 
 \vspace{5mm}
 
 \section{Problem Statement} \label{problem_statment}
     The problem statement can be formulated as an evaluation of Paragraph Vectors\cite{le2014distributed} on a document score regression task to evaluate the accuracy of the prediction model that can be built using the shallow neural network language model learning algorithm previously described by Mikolov et al. \cite{mikolov2013efficient}, which was primarily used to word embeddings trained in an unsupervised manner.
 
-    The prediction scores will be evaluated using the co-efficient of determination metric, also known as the R\textsuperscript{2} metric \cite{cameron1997r}. The hypothesis is to prove that the document ratings have a positive correlation with the vectorized versions of the document text content, because the semantics of positive and negative reviews are expected to be captured by the shallow neural network trained on the corpus. The expected R\textsuperscript{2} metric score being over 0, will confirm the hypothesis, and a negative value will contradict it.
+    The prediction scores will be evaluated using the co-efficient of determination metric, also known as the R\textsuperscript{2} metric \cite{cameron1997r}. 
+    The hypothesis is to prove that the document ratings have a positive correlation with the vectorized versions of the document text content, because the semantics of positive and negative reviews are expected to be captured by the shallow neural network trained on the corpus.
+    The expected R\textsuperscript{2} metric score being over 0, will confirm the hypothesis, and a negative value will contradict it.
 
 \begin{figure*}[ht] \label{fig:paragraph-vector-framework}
     \centering
@@ -94,7 +100,10 @@
 \vspace{5mm}
 
 \section{Motivation}
-    The motivation for the project is to prove that a substantial amount of the semantic signal about sentiment with respect to a product or service, as extracted from a snippet or document of text, should prove to be a good indicator of the labeled document scores. If proven to be true, the objective includes building a real-time streaming framework, which can analyze unseen reviews from the previously provided exampled of unlabeled data, and be able to emit a score-prediction with minimal processing delays. This framework can be set-up on commodity hardware, and a given business can simply pipe their unlabeled reviews or articles into the system, and expect a graphical representation of the sentiment about a particular topic that is updated in real-time. The framework also allows rules to be set for alerts, so, for instance, if the approval rating of a particular business falls very low, an email alert could be triggered to the business decision makers to respond quicker to the negative sentiment, a process which would otherwise span several business days.
+    The motivation for the project is to prove that a substantial amount of the semantic signal about sentiment with respect to a product or service, as extracted from a snippet or document of text, should prove to be a good indicator of the labeled document scores. 
+    If proven to be true, the objective includes building a real-time streaming framework, which can analyze unseen reviews from the previously provided exampled of unlabeled data, and be able to emit a score-prediction with minimal processing delays.
+    This framework can be set-up on commodity hardware, and a given business can simply pipe their unlabeled reviews or articles into the system, and expect a graphical representation of the sentiment about a particular topic that is updated in real-time. 
+    The framework also allows rules to be set for alerts, so, for instance, if the approval rating of a particular business falls very low, an email alert could be triggered to the business decision makers to respond quicker to the negative sentiment, a process which would otherwise span several business days.
 
     \subsection{Semi-supervised Learning}
         The statistical learning formulation of the problem statement in this study, can be broken down into two distinct segments, namely:
@@ -128,35 +137,69 @@
 
 \vspace{5mm}
 
-\section{Natural Language Understading Domain Challenges}
+\section{Natural Language Understanding Domain Challenges}
     The section elaborates on the NLP domain-specific challenges faced during the implementation of this research project, and the proposed strategies used to tackle these challenges or minimize their impact on the final outcome of the experiment.
 
-    \subsection{Unstructured Big Data}
-        Unstructured data is defined as data, large amounts of it, in this case, which do not abide by a strict schema\cite{buneman1996query}. This happens when the process of data generation itself is unmoderated and does not impose too many constraints on the type of data allowed. It could also be that the data contains soft links or references to other entities within the data. As such, the onus is on the application to process large amount of unstructured data and attempt to extract some meaning and relations from it.
-
     \subsection{Language Model Learning}
-        Language model learning is complicated because the two chief modeling approaches currently used have inherent limitations when it comes to being able to be used reliably across the board:
+        Language model learning is complicated because the most popular modeling approaches currently used have inherent limitations when it comes to being able to be used reliably for language understanding accuracy across the board:
         
         \subsubsection{Lexicon based model learning}
-            Lexicon based models are reliable for one-off tasks, but they require hand-annotation of the polarity of words, and an over-dependence on the fact that the lexicon of words needs to be updated regularly as and when it comes across new words. This requires time and effort and is rather tedious. This challenge is addressed in the research project, by using an unsupervised method to learn the document vector representations, and not relying on any lexicon for semantics details.
+            Lexicon based models are reliable for one-off tasks, but they require hand-annotation of the polarity of words, and an over-dependence on the fact that the lexicon of words needs to be updated regularly as and when it comes across new words. 
+            This requires time and effort and is rather tedious. 
+            This challenge is addressed in the research project, by using an unsupervised method to learn the document vector representations, and not relying on any lexicon for semantics details.
 
         \subsubsection{Statistical model based learning}
             TF-IDF and similar document scoring approaches, are based on the bag-of-words model. Hence, it does not capture position in text, semantics, co-occurrences in different documents, and other such features. Also, this shortcoming means that it cannot capture semantics of a word. It relies heavily on occurrence count across the entire corpus of documents.
 
-        \subsubsection{Cross domain applicability}
-            One of the major drawbacks of statistical model based learning in particular is that 
+        \subsubsection{Cross domain applicability} \label{cross_domain_applicability}
+            One of the major drawbacks of statistical model based learning in particular is that a language model trained on a dataset belonging to a particular domain is highly unlikely to yield good results when assessed or tested on another domain. 
+            For instance, a language model trained for detecting sentiment on a movie review data-set and be used to predict sentiment on a stock-market discussion dataset. 
+            This is due to the inherent business domain specific differences in the vocabulary and connotations that will unlikely be modeled when trained on a completely different dataset than the one that the model needs to be tested upon. 
+            This problem is not directly tackled for this study, but the author proposes a future direction in the Section \ref{future_work} which may help address this problem in future versions of Rapid-Rate.
+
+    \subsection{Sarcasm/Irony Detection in Text}
+        One of the biggest hurdles with accurately inferring sentiment of a document despite having a robust trained model, or even a lexicon, is the presence of sarcasm and irony, which are extremely likely for unmoderated comments and articles, especially on forums and social media. 
+        For now, there is no clear best-approach for sarcasm and irony detection, and often, the best features for detecting such sentiment is text meta-data like emoticons and tags rather than the text itself, as discussed by Gonz{\'a}lez-Ib{\'a}nez et al.\cite{gonzalez2011identifying}.
 
     \subsection{Deep Learning}
-        The challenge with using deep learning for the model training is there deep learning models typically take hours to even days to completely train. If a system needs to be setup from scratch, deep learning does increase the time to market by being notoriously difficult to train. This challenge addressed by incurring only a one-time cost of training the labeled. Future iterations of the training does not block the current execution of the real-time prediction component.
+        The challenge with using deep learning for the model training is there deep learning models typically take hours to even days to completely train. 
+        If a system needs to be setup from scratch, deep learning does increase the time to market by being notoriously difficult to train. 
+        This challenge addressed by incurring only a one-time cost of training the labeled. Future iterations of the training does not block the current execution of the real-time prediction component.
 
 \vspace{5mm}
 
-\section{Engineering Design Challenges}
-    
-    \subsection{Distributed Setup}
+\section{Engineering Design \& Implementation Challenges}
+    The previous section described the natural language understanding challenges. This sections aims to describe the engineering design and implementation challenges that needed to be tackled during the implementation phase.
 
-    \subsection{Separate chunks scheduling}
+    \subsection{Unstructured Big Data}
+        Unstructured data is defined as data, large amounts of it, in this case, which do not abide by a strict schema\cite{buneman1996query}. 
+        This happens when the process of data generation itself is unmoderated and does not impose too many constraints on the type of data allowed. 
+        It could also be that the data contains soft links or references to other entities within the data. 
+        As such, the onus is on the application to process large amount of unstructured data and attempt to extract some meaning and relations from it.
+        This is tackled by adopting a Paragraph Vector approach to convert variable-length text into fixed-length vectors, described in detail in Section \ref{paragraph_vectors}.
 
+    \subsection{Distributed Document Vector Learning} \label{dist_docvec_learning}
+        The preference for the most computationally intensive tasks is to distribute them by scaling horizontally.
+        This allows a driver to submit multiple chunks of the same job to a number of workers.
+        These workers can then convey the driver of the output once they finish their respective jobs, and the driver can aggregate these results.
+        However, the library used for this study, Gensim, does not, by default, include a distributed setup for document model learning.
+        Instead the onus is on the implementation to integrate Gensim with a distributed processing framework like Spark or Hadoop.
+        The current implementation of Rapid-Rate uses a low-memory footprint iterator based technique to reduce the system memory usage on a single node, for the off-line document vector learning task described in Section \ref{offline_module}.
+        This could be scaled to train even higher volumes of documents if integrated with a distributed processing framework.
+
+    \subsection{Optimal Setup for Production Execution}
+        The motivation behind building a framework itself, should be closely relatable to a typical production setup in an industrial setting.
+        Hence, the decision to separate the business logic of the document vector training component (off-line module) and the real-time prediction component (on-line module). 
+        This can enable the document vector training to be done asynchronously in the background, agnostic of the current state of the real-time component, and keep enhancing the currently learned document vector model and machine learning modules.
+        Similarly, the real-time prediction component does not need to be blocked on the document vector learning component after the first run.
+        It can simply keep using the older version of the trained document vector model and machine learning model while the off-line schedule cronjob runs in the background.
+
+        This allows for easy maintenance if the off-line module needs to be temporarily paused for maintenance.
+        Similarly, if the always-running daemon job for the on-line module needs to be temporarily paused, the streaming documents are not lost. 
+        The distributed queue keeps the documents queued, along with the offset of where the on-line module needs to resume reading from. 
+        This ensures that the on-line module can simply proceed from where it left off before being taken down for maintenance.
+
+\vspace{5mm}
 
 \begin{figure*}[ht] \label{fig:system-architecture}
     \centering
@@ -174,14 +217,25 @@
     The sections touches upon the background information that needs to be known prior to doing a deep-dive into the details of the research study and implementation done for this project.
 
     \subsection{Word2Vec} \label{Word2Vec}
-        Word vectors are a step-away from the traditional bag-of-words + n-gram model. The latter ends up losing
+        Word vectors are a step-away from the traditional bag-of-words + n-gram model. 
+        The latter ends up losing context of the words because of the fact that the words that follow it are not taken into account, and only the preceding words are. .
 
-        The Word2Vec model\cite{mikolov2013efficient} can take into consideration both preceding and succeeding words, to compute the probability of occurrence of the current word, as part of the Continuous Bag-of-words (CBOW) model. Alternatively, Word2Vec also provides a skip-gram model\cite{mikolov2013distributed}, which conversely, used the context of a word i.e. the words preceding and following it, to predict the most statistically probably current word. These word embeddings can be used to derive both syntactic as well as semantic relations in the vector space of the language model. A representation of this is given in Figure \ref{fig:word2vec-vectorspace-intuition}.
+        The Word2Vec model\cite{mikolov2013efficient} can take into consideration both preceding and succeeding words, to compute the probability of occurrence of the current word, as part of the Continuous Bag-of-words (CBOW) model. 
+        Alternatively, Word2Vec also provides a skip-gram model\cite{mikolov2013distributed}, which conversely, used the context of a word i.e. the words preceding and following it, to predict the most statistically probably current word. 
+        These word embeddings can be used to derive both syntactic as well as semantic relations in the vector space of the language model. A representation of this is given in Figure \ref{fig:word2vec-vectorspace-intuition}.
 
-    \subsection{Paragraph Vectors}
+    \subsection{Paragraph Vectors} \label{paragraph_vectors}
         Paragraph vectors are a similar concept to Word2Vec, but rely on computing a fixed-length vector representation of a variable length group of words, which could be a sentence, a paragraph, or even an entire document.
 
-        Since vectors representations of documents seem to outperform bag-of-words models for the purposes of semantic summarization and document classification tasks, it follows that a vector representation based approach should be used to evaluate performance on a regression task as well. Paragraph vectors also address some of the key weaknesses of bag-of-words models. First, they inherit an important property of the word vectors: the semantics of the words. The second advantage of the paragraph vectors is that they take into consideration the word order, at least in a small context, in the same way that an n-gram model with a large n would do. This is important, because the n-gram model preserves a lot of information of the paragraph, including the word order\cite{le2014distributed}. The paragraph representation framework is depicted in Fig. \ref{fig:paragraph-vector-framework}.
+        Since vectors representations of documents seem to outperform bag-of-words models for the purposes of semantic summarization and document classification tasks, it follows that a vector representation based approach should be used to evaluate performance on a regression task as well. 
+        Paragraph vectors also address some of the key weaknesses of bag-of-words models. 
+        First, they inherit an important property of the word vectors: the semantics of the words. 
+        The second advantage of the paragraph vectors is that they take into consideration the word order, at least in a small context, in the same way that an n-gram model with a large n would do. 
+        This is important, because the n-gram model preserves a lot of information of the paragraph, including the word order\cite{le2014distributed}.
+        The paragraph representation framework is depicted in Fig. \ref{fig:paragraph-vector-framework}. 
+
+        The core concept here, is that an aggregation of the word vectors are being associated with a paragraph ID that encapsulates all of the words in question. 
+        Thus, rather than just assigning each individual word a vector representation, each paragraph/group of words in the body of the text document have been assigned a vector representation.
 
         The implementation of paragraph vectors used for the purpose of implementing the system architecture in this study is Doc2Vec, from the Gensim library\cite{doc2vec_api}.
 
@@ -189,24 +243,32 @@
     \subsection{Statistical Learning Models}
         Once the entities about which we wish to learn a representation are projected into vector space, there are an abundance of statistical learning methods that can be used to learn a continuous function including linear regression, polynomial regression, ridge regression, stepwise regression, lasso regression et. al.
 
-        This study utilizes linear regression and support vector regression to test the veracity of the model predictions. Both these methods are described in the below subsections.
+        This study utilizes linear regression and support vector regression to test the veracity of the model predictions.
+        Both these methods are described in the below sub-sections.
 
-    \subsubsection{Linear Regression}
-        The problem of regression in mathematical statistics is characterized by the fact that there is insufficient information about the distributions of the variables under consideration\cite{regression_analysis}.
+        \subsubsection{Linear Regression}
+            The problem of regression in mathematical statistics is characterized by the fact that there is insufficient information about the distributions of the variables under consideration\cite{regression_analysis}.
 
-        In the case for this study, once the Doc2Vec implementation generates the vector space representation of each of the documents, each of the learned dimensions represent a different input variable for the regression problem. In reality, each of these dimensions represent a weighted probability score generate by the hidden layer of neurons in the paragraph vector model.
+            In the case for this study, once the Doc2Vec implementation generates the vector space representation of each of the documents, each of the learned dimensions represent a different input variable for the regression problem. In reality, each of these dimensions represent a weighted probability score generate by the hidden layer of neurons in the paragraph vector model.
 
-    \subsubsection{Support Vector Regression}
-        Support Vector Regression (SVR) attempts to minimize the generalization error bound so as to achieve generalized performance. The idea of SVR is based on the computation of a linear regression function in a high dimensional feature space where the input data are mapped via a nonlinear function. SVR has been applied in various fields – time series and financial (noisy and risky) prediction, approximation of complex engineering analyses, convex quadratic programming and choices of loss functions\cite{basak2007support}.
+        \subsubsection{Support Vector Regression}
+            Support Vector Regression (SVR) attempts to minimize the generalization error bound so as to achieve generalized performance. The idea of SVR is based on the computation of a linear regression function in a high dimensional feature space where the input data are mapped via a nonlinear function. SVR has been applied in various fields – time series and financial (noisy and risky) prediction, approximation of complex engineering analyses, convex quadratic programming and choices of loss functions\cite{basak2007support}.
 
-        The input parameters to the support vector regression model remain the same as those described above for the linear regression model.
+            The input parameters to the support vector regression model remain the same as those described above for the linear regression model.
 
 
     \subsection{Distributed Messaging with Kafka}
-        This project uses Apache Kafka for processing huge volume of real-time data streams. Like a messaging system, Kafka employs a pull-based consumption model that allows an application to consume data at its own rate and rewind the consumption whenever needed. By focusing on log processing applications, Kafka achieves much higher throughput than conventional messaging systems. It also provides integrated distributed support and can scale out. Kafka has been used successfully at LinkedIn for both off-line and on-line applications. \cite{kreps2011kafka}
+        This project uses Apache Kafka for processing huge volume of real-time data streams.
+        Like a messaging system, Kafka employs a pull-based consumption model that allows an application to consume data at its own rate and rewind the consumption whenever needed. 
+        By focusing on log processing applications, Kafka achieves much higher throughput than conventional messaging systems. 
+        It also provides integrated distributed support and can scale out. 
+        Kafka has been used successfully at LinkedIn for both off-line and on-line applications. \cite{kreps2011kafka}
 
     \subsection{Horizontal Scaling with Spark Streaming}
-        This study used Apache Spark Streaming for the real-time processing of the unlabeled document data. Discretized streams (D-Streams), a stream programming model for large clusters that provides consistency, efficient fault recovery, and powerful integration with batch systems is the core offering of Spark Streaming. The key idea is to treat streaming as a series of short batch jobs, and bring down the latency of these jobs as much as possible. This brings many of the benefits of batch processing models to stream processing, including clear consistency semantics and a new parallel recovery technique that is a truly cost-efficient recovery technique for stream processing in large clusters\cite{zaharia2012discretized}.
+        This study used Apache Spark Streaming for the real-time processing of the unlabeled document data. 
+        Discretized streams (D-Streams), a stream programming model for large clusters that provides consistency, efficient fault recovery, and powerful integration with batch systems is the core offering of Spark Streaming. 
+        The key idea is to treat streaming as a series of short batch jobs, and bring down the latency of these jobs as much as possible. 
+        This brings many of the benefits of batch processing models to stream processing, including clear consistency semantics and a new parallel recovery technique that is a truly cost-efficient recovery technique for stream processing in large clusters\cite{zaharia2012discretized}.
 
 \vspace{5mm}
 
@@ -219,20 +281,26 @@
     \subsection{Components} \label{Components}
 
         \subsubsection{Document embedding tool}
-            The labeled documents are the initial input parameters to the Rapid-Rate framework. These are variable length text snippets or paragraphs, each with an associated score. This tool is used to convert the document text into their corresponding vector representations.
+            The labeled documents are the initial input parameters to the Rapid-Rate framework. 
+            These are variable length text snippets or paragraphs, each with an associated score. 
+            This tool is used to convert the document text into their corresponding vector representations.
 
         \subsubsection{ML Modeling tool}
             This is a library used by the framework to infer a model from the vectorized documents (independent variable) that predict the rating/score of that particular document (dependent variable). 
+            It uses algorithms such as stochastic gradient descent in an attempt to converge to a lowest possible value of learning error\cite{bottou2010large}. 
 
         \subsubsection{Text Aggregation}
-            This component is responsible for merging multiple different streams of data into a unified stream that can be used to predict sentiment ratings of unlabeled documents.
+            This component is responsible for merging multiple different streams of data into a unified stream that can be used to predict sentiment ratings of unlabeled documents. 
+            This can be implemented in frameworks like Apache Flume or Apache Storm, which allow definitions of multiple sources and sinks, with a topology for data processing as part of the aggregation business logic.
 
-        \subsubsection{Message Broker Queue}
+        \subsubsection{Message Broker Queue} \label{message_broker_queue}
             This component acts as the arbiter for the incoming unlabeled documents. 
             Each document is read from the queue and is processed in turn.
+            The queue is capable of holding a large buffer, as well as an offset for each of it's consumers, to serve as a memory or bookmark of where the consumer stopped during their last subscription to the queue's updates.
 
         \subsubsection{Stream Processor}
             The stream processor is responsible for reading and processing the unlabeled documents, predicting the score/rating of each incoming document, and forwarding the scores for further usage.
+            This component's setup is distributed, and is also able to subscribe to the updates being pushed by the message broker queue (Section \ref{message_broker_queue}). 
 
         \subsubsection{Time-Series Database}
             A time series database is optimized to handled collections of data objects that are indexed by time. 
@@ -256,7 +324,7 @@
 
 \vspace{5mm}
 
-\begin{algorithm}[ht] \label{offline_module}
+\begin{algorithm}[ht] \label{offline_module_algo}
     \KwData{$document\_corpus$}
     \KwResult{$document\_vector\_model$, $stat\_learning\_model$}
     \DontPrintSemicolon 
@@ -344,41 +412,51 @@
 \end{figure*}
 
 \section{Implementation}
-    This section briefly discusses the implementation specifics chosen for the code-base, and the architectural decisions that govern this particular framework. This is helpful to know in case a new application to be chosen to act as a pipeline into, or a sink of the data processed by the Rapid-Rate framework.
+    This section briefly discusses the implementation specifics chosen for the code-base, and the architectural decisions that govern this particular framework. 
+    This is helpful to know in case a new application to be chosen to act as a pipeline into, or a sink of the data processed by the Rapid-Rate framework.
 
     The primary language of implementation of this research project is Python, and the other frameworks and components have been described in the Tech Stack section. (Section \ref{Tech stack})
 
-    \subsection{Off-line learning module}
-        The off-line learning module is comprised of the shallow neural-network implementation using the library Gensim\ref{gensim}. The algorithm of this module is shown in Algorithm \ref{offline_module}.
+    \subsection{Off-line learning module} \label{offline_module}
+        The off-line learning module is comprised of the shallow neural-network implementation using the library Gensim\ref{gensim}. 
+        The algorithm of this module is shown in Algorithm \ref{offline_module_algo}.
 
     \subsection{On-line real-time prediction engine}
-        The on-line prediction module is the real-time component submitted to Spark (Section \ref{spark}) workers. Each of the spark workers listen to a distributed queue in Kafka (Section \ref{kafka}). As and when the unlabeled documents are streamed, the engine reads the streamed data and predicts a score before posting it into OpenTSDB (Section \ref{opentsdb}). The general algorithm for handling the streaming data is described in Algorithm \ref{online_module}. A sub-section of this module, the algorithm used to infer sentiment, is described in Algorithm \ref{infer_sentiment}.
+        The on-line prediction module is the real-time component submitted to Spark (Section \ref{spark}) workers. 
+        Each of the spark workers listen to a distributed queue in Kafka (Section \ref{kafka}). 
+        As and when the unlabeled documents are streamed, the engine reads the streamed data and predicts a score before posting it into OpenTSDB (Section \ref{opentsdb}). 
+        The general algorithm for handling the streaming data is described in Algorithm \ref{online_module}. 
+        A sub-section of this module, the algorithm used to infer sentiment, is described in Algorithm \ref{infer_sentiment}.
 
     \subsection{Tech stack} \label{Tech stack}
-        The tech stack used for the implementation of the framework is comprised of:
+        The sub-section described the composition of the tech-stack used to implement the Rapid-Rate framework.
 
         \subsubsection{Python}
-            Processing code, pipelining, real-time prediction code\cite{python}.
+            Document processing \& cleaning, pipelining, real-time prediction\cite{python}.
 
         \subsubsection{Gensim} \label{gensim}
-            Python library. The Doc2Vec class in Gensim is used to learn the document representations\cite{doc2vec_api}.
+            Python library. 
+            The Doc2Vec class in Gensim is used to learn document vector representations\cite{doc2vec_api}.
         
         \subsubsection{Scikit-Learn}
-            Python library. The linear regression and support vector regression is done using this library\cite{scikit_learn}.
+            Python library. 
+            Enable the computation of linear regression and support vector regression models\cite{scikit_learn}.
         
         \subsubsection{Apache Kafka} \label{kafka}
-            Distributed messaging queue. This is used to receive new unlabeled documents, and is also a potential sink for dumping the results of the result ratings of unlabeled documents\cite{kreps2011kafka}.
+            Distributed messaging queue. 
+            Used to receive new unlabeled documents, and is also a potential sink for dumping the results of the result ratings of unlabeled documents\cite{kreps2011kafka}.
         
         \subsubsection{Apache Spark Streaming} \label{spark}
-            The real-time prediction component written in Python runs on Spark Streaming\cite{zaharia2012discretized}.
+            The real-time prediction component written in Python is submitted as a Spark Streaming job\cite{zaharia2012discretized}.
         
         \subsubsection{OpenTSDB} \label{opentsdb}
-            Time series database. This database houses each individually predicted document rating and their corresponding time-stamps\cite{opentsdb}.
+            Time series database. 
+            This database houses each individually predicted document rating and their corresponding time-stamps\cite{opentsdb}.
         
         \subsubsection{Bosun}
             Bosun comprises of 2 things - a graphical interface with which to perform easy temporal scans, and a configurable alerting system based on the rules on the incoming values\cite{bosun_repo}. 
 
-        The chosen tech-stack is state-of-the-art for framework design and development, with a strong developer community and guaranteed long-term support for each, making the framework future-proof for the foreseeable time-line.
+        The chosen tech-stack is state-of-the-art for framework design and development, with a strong developer community and guaranteed long-term support for each, making the framework future-proof for the foreseeable time.
 
 \begin{figure*}[ht] \label{fig:time-series-analytics-dashboard}
     \centering
@@ -391,9 +469,9 @@
 \section{Evaluation}
 
     \subsection{Testbed}
-        The testbed is integrated into the actual framework, and the processors for model training.
+        The testbed is integrated into the actual framework, and the processors for model training evaluate the model accuracy.
         The tests were carried out on an Amazon document corpus of 600,000 unique product reviews.
-        The complete dataset of Amazon reviews is openly accessible\cite{amazon_datasets}.
+        The complete dataset of Amazon reviews is openly available to download\cite{amazon_datasets}.
 
     \subsection{Metrics}
         The experimental results are being evaluated for goodness of model fit using the co-efficient of determination metric \cite{jaeger1990statistics}.
@@ -418,7 +496,7 @@
     \subsection{Experimental Results}
         The accuracy scores of the experimental results are presented in Table \ref{results}. The score presented in this table is the co-efficient of determination or $R^2$ score.
 
-        \begin{table}[ht] \caption{Evaluation results} \label{results}
+        \begin{table}[h] \caption{Evaluation results} \label{results}
             \centering
             \resizebox{0.35\textwidth}{!}{
                 \begin{tabular}{| c | c |}
@@ -438,7 +516,8 @@
         As indicated in Figure \ref{fig:accuracy-v-data}, the current trend seems to suggest a polynomial improvement on increasing the number of documents to be trained on. 
         The initial experimentation was done on a corpus of 100,000 labeled documents. 
 
-        Also, from the code profiling information presenting in Figure \ref{fig:code-profiling}, it is evident that the unsupervised learning segment of obtaining the document vectors of the labeled documents is the longest running part of the off-line learning module. In comparison, the document processing and statistical model training is negligible.
+        Also, from the code profiling information presenting in Figure \ref{fig:code-profiling}, it is evident that the unsupervised learning segment of obtaining the document vectors of the labeled documents is the longest running part of the off-line learning module. 
+        In comparison, the document processing and statistical model training is negligible.
 
 \vspace{5mm}
 
@@ -462,7 +541,7 @@
 
 \vspace{5mm}
 
-\section{Future Work}
+\section{Future Work} \label{future_work}
     With respect to the statistical models trained, the current approach supports only the simplest regression models i.e. Linear Regression and Support Vector Regression (SVR). 
     This could be expanded to offer additional training mechanisms that can integrate more sophisticated regression algorithms for a higher level of accuracy.
      
@@ -471,13 +550,19 @@
     But this can easily be converted into something more generic, like publishing it to another Kafka queue.
     Multiple consumer applications can, thus, benefit from the stream of insights published to the stream.
 
+    With reference to the natural language understanding challenge described in Section \ref{cross_domain_applicability}, a proposed solution could be to merely obfuscate the entities being spoken about the the document for which the sentiment analysis model is being trained for. 
+    Similarly, the obfuscation also needs to be done for the test dataset. 
+    Since this removes the dependence of the sentiment in the document to the sentiment expressed in it, it would logically allow for a more generic prediction model. 
+    Although this won't completely mitigate the presence of domain-specific jargon, it does allow for a more accurate prediction model, and remains to be evaluated.
+
     Another potential aim for future work is to reduce the time taken for the initial document vector training of the off-line model.
-    As shown in the code profiling statistics present in Figure \ref{fig:code-profiling}, it is evident that a significant reduction in the cost of training the initial model could be achieved if the document vectors training time were to be reduced.
+    As shown in the code profiling statistics present in Figure \ref{fig:code-profiling}, it is evident that a significant reduction in the cost of training the initial model could be achieved if the document vectors training time were to be reduced. 
+    This can be achieved by the horizontal scaling described in Section 
 
 \vspace{5mm}
 
 \section{Acknowledgments}
-    The author would like to thank Dr. Paulo Alencar, for his guidance, feedback and suggestions during the conceptualization of this research project.
+    The author would like to thank Dr. Paulo Alencar, for his guidance, feedback and suggestions during the conceptualization of this research project. The author would also like to thank Dr. Olga Vechtomova for her feedback and ideas on document evaluation and sentiment polarity tasks.
 
 \vspace{5mm}
 
