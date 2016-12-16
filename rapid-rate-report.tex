@@ -34,7 +34,7 @@
     Although such tasks like the one described about have been explored with respect to document classification problems in the past, the implementation described in this paper, by virtue of learning a continuous function rather than a discrete one, offers a lot more depth of insight as compared to document classification approaches. 
     
     This study aims to explore the validity of such a continuous function predicting model to quantify sentiment about an entity, without the additional overhead of manual labeling, and computational preprocessing \& feature extraction.
-    This research project also aims to design and implement a re-usable document regression pipeline as a framework, Rapid-Rate, that can be used to predict document scores in real-time.
+    This research project also aims to design and implement a re-usable document regression pipeline as a framework, Rapid-Rate\cite{rapid_rate}, that can be used to predict document scores in real-time.
 \end{abstract}
 
 \vspace{5mm}
@@ -84,12 +84,12 @@
     The purpose of this study is to extend the usage of the document vector representation to demonstrating its usage when the response variable (the output of a learning task) a continuous function (document-scoring) rather than discrete values (document classification). 
     This work can be viewed as a generalization of the previous approaches, because this study aims to predict fine-grained document scores, rather than coarse document classifications.
 
-    Most of the current work in usage of regression techniques on text content are related to meta-data or features extraction \cite{su2015genetic} \cite{weissman2016natural}.
+    Most of the current work in usage of regression techniques on text content are related to meta-data or features extraction \cite{su2015genetic}\cite{weissman2016natural}.
     Similarly there have been several studies to identify document tags using classification techniques\cite{bespalov2011sentiment}\cite{pang2002thumbs}. 
     However, there is a relative absence of studies to evaluate the accuracy of regression models that try to predict a document score using a continuous-function model.
 
     As far the the author is aware, there has been no similar work to test the regression accuracy of paragraph vectors in an experimental research setup before, and is hence, novel in that respect.
-    Hence, the evaluation of the effectiveness of this approach will be assessed using a generic evaluation metric, the coefficient of determination score.
+    The evaluation of the effectiveness of this approach will be assessed using a generic evaluation metric, the coefficient of determination score.
 
 \vspace{5mm}
 
@@ -552,6 +552,8 @@
     The overall framework has been built using state-of-the-art product offering in neural-net document embedding libraries, distributed stream processing in Spark, distributed queue architecture in Kafka, and the stable machine learning framework which is a part of scikit-learn. 
 
     The author believes this framework can be used both in industrial settings as well as an evaluation testbed for any document embedding and machine learning libraries used as an ensemble. The hypothesis made prior to undertaking this research project, as described in the Problem Statement (Section \ref{problem_statment}) has been validated and proved to be true.
+
+    The framework itself, is open-sourced, and is free to be used to replicate the results or to be extended independently\cite{rapid_rate}.
 
 \vspace{5mm}
 
